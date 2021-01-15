@@ -1,0 +1,26 @@
+version: '3'
+services:
+#  web:
+#    build:
+#      context: ./client
+#    command: npm run start
+#    environment:
+#      GRPC_HOST: http://localhost:8080
+#      HOST: 0.0.0.0
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - reverse-proxy
+  reverse-proxy:
+    build:
+      context: ./envoy
+    ports:
+      - "8080:8080"
+      - "9901:9901"
+#    depends_on:
+#      - service
+#  service:
+#    build:
+#      context: ./server
+#    ports:
+#      - "9090:9090"
