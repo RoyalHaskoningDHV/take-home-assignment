@@ -15,17 +15,21 @@ syntax = "proto3";
 
 option java_multiple_files = true;
 option java_package = "com.carcatalogue.proto";
-option java_outer_classname = "PigProto";
+option java_outer_classname = "CarCatalogueProto";
 
-package animals;
+package carcatalogue;
 
-service Pig {
-  rpc Oink (OinkRequest) returns (OinkReply) {}
+service SearchCar {
+  rpc Search (SearchRequest) returns (SearchReply) {}
 }
 
-message OinkRequest {
+message SearchRequest {
+  string manufacturer = 1;
 }
-
-message OinkReply {
-  string message = 1;
+message SearchReply {
+  repeated Car cars = 1;
+}
+message Car {
+  string manufacturer = 1;
+  string productionYear = 2;
 }

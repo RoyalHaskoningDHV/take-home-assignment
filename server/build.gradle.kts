@@ -49,21 +49,21 @@ protobuf {
     }
 }
 
-tasks.register<JavaExec>("AnimalsServer") {
+tasks.register<JavaExec>("CarCatalogueServer") {
     dependsOn("classes")
     classpath = sourceSets["main"].runtimeClasspath
-    main = "com.carcatalogue.server.AnimalsServerKt"
+    main = "com.carcatalogue.server.CarCatalogueServerKt"
 }
 
-val animalsServerStartScripts = tasks.register<CreateStartScripts>("animalsServerStartScripts") {
-    mainClassName = "com.carcatalogue.server.AnimalsServerKt"
-    applicationName = "animals-server"
+val carCatalogueServerStartScripts = tasks.register<CreateStartScripts>("carCatalogueServerStartScripts") {
+    mainClassName = "com.carcatalogue.server.CarCatalogueServerKt"
+    applicationName = "car-catalogue-server"
     outputDir = tasks.named<CreateStartScripts>("startScripts").get().outputDir
     classpath = tasks.named<CreateStartScripts>("startScripts").get().classpath
 }
 
 tasks.named("startScripts") {
-    dependsOn(animalsServerStartScripts)
+    dependsOn(carCatalogueServerStartScripts)
 }
 
 java {

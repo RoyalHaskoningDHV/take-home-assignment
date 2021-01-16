@@ -1,15 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
-import {Dog, DogClient} from "./proto/dog_pb_service";
-import {BarkRequest} from "./proto/dog_pb";
+import {SearchCarClient} from "./proto/searchCar_pb_service";
+import {SearchRequest} from "./proto/searchCar_pb";
 
 function App() {
 
   async function doStuff () {
-    const client = new DogClient('http://localhost:8080')
-    const request = new BarkRequest()
-    await client.bark(request, (error, responseMessage) => {
-      console.log('response!', responseMessage?.getMessage())
+    const client = new SearchCarClient('http://localhost:8080')
+
+    const searchRequest = new SearchRequest()
+    searchRequest.setManufacturer("Citroen")
+    await client.search(searchRequest, (error, responseMessage) => {
+      console.log('response cars!', responseMessage?.getCarsList()[0].getManufacturer(), responseMessage?.getCarsList()[0].getProductionyear())
       if(error) {
         console.error('ERRR', error)
       }

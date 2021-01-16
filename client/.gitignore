@@ -1,1 +1,5 @@
 src/proto
+
+react-app-env.d.ts
+
+.eslintcache

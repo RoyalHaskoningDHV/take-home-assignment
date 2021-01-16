@@ -20,12 +20,10 @@ import com.carcatalogue.proto.*
 import io.grpc.Server
 import io.grpc.ServerBuilder
 
-class AnimalsServer constructor(private val port: Int) {
+class CarCatalogueServer constructor(private val port: Int) {
     val server: Server = ServerBuilder
             .forPort(port)
-            .addService(DogService())
-            .addService(PigService())
-            .addService(SheepService())
+            .addService(CarCatalogueService())
             .build()
 
     fun start() {
@@ -34,7 +32,7 @@ class AnimalsServer constructor(private val port: Int) {
         Runtime.getRuntime().addShutdownHook(
                 Thread {
                     println("*** shutting down gRPC server since JVM is shutting down")
-                    this@AnimalsServer.stop()
+                    this@CarCatalogueServer.stop()
                     println("*** server shut down")
                 }
         )
@@ -48,28 +46,17 @@ class AnimalsServer constructor(private val port: Int) {
         server.awaitTermination()
     }
 
-    private class DogService : DogGrpcKt.DogCoroutineImplBase() {
-        override suspend fun bark(request: BarkRequest) = BarkReply.newBuilder()
-                .setMessage("Bark!")
-                .build()
-    }
+    private class CarCatalogueService : SearchCarGrpcKt.SearchCarCoroutineImplBase() {
 
-    private class PigService : PigGrpcKt.PigCoroutineImplBase() {
-        override suspend fun oink(request: OinkRequest) = OinkReply.newBuilder()
-                .setMessage("Oink!")
-                .build()
-    }
-
-    private class SheepService : SheepGrpcKt.SheepCoroutineImplBase() {
-        override suspend fun baa(request: BaaRequest) = BaaReply.newBuilder()
-                .setMessage("Baa!")
-                .build()
+        override suspend fun search(request: SearchRequest): SearchReply {
+            return SearchReply.newBuilder().addCars(Car.newBuilder().setManufacturer(request.manufacturer).setProductionYear("2010").build()).build()
+        }
     }
 }
 
 fun main() {
     val port = 50051
-    val server = AnimalsServer(port)
+    val server = CarCatalogueServer(port)
     server.start()
     server.blockUntilShutdown()
 }
