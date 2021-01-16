@@ -6,6 +6,9 @@ import com.carcatalogue.server.repository.model.CarData
 import com.carcatalogue.server.services.recommendations.AnnualCostsRecommendation
 import com.google.protobuf.Empty
 
+/**
+ * Service for interacting with the car catalogue.
+ */
 class CarCatalogueService(private val carRepo: CarRepo) : SearchCarGrpcKt.SearchCarCoroutineImplBase() {
 
     override suspend fun search(request: SearchRequest): SearchReply {
@@ -14,26 +17,14 @@ class CarCatalogueService(private val carRepo: CarRepo) : SearchCarGrpcKt.Search
         val releaseYear = if(request.releaseYear != 0) request.releaseYear else null
 
         val cars = carRepo.getAllCars(request.manufacturer, releaseYear)
-
-        val carResponseList = cars.map {
-            it.toResponseModel()
-        }
-        return SearchReply.newBuilder().addAllCars(carResponseList).build()
+        return SearchReply
+            .newBuilder()
+            .addAllCars(cars.map { it.toResponseModel() })
+            .build()
     }
 
     override suspend fun addCar(request: Car): Empty {
-        carRepo.addCar(
-            CarData(
-            model = request.model,
-            manufacturer = request.manufacturer,
-            version = request.version,
-            releaseYear = request.releaseYear,
-            priceInCents = request.priceInCents,
-            fuelConsumption = request.fuelConsumption,
-            maintenanceCostInCents = request.maintenanceCostInCents,
-        )
-        )
-
+        carRepo.addCar(request.toCarData())
         return Empty.getDefaultInstance()
     }
 
@@ -62,4 +53,16 @@ fun CarData.toResponseModel(): Car {
         .setFuelConsumption(fuelConsumption)
         .setMaintenanceCostInCents(maintenanceCostInCents)
         .build()
+}
+
+fun Car.toCarData(): CarData {
+    return CarData(
+        model = model,
+        manufacturer = manufacturer,
+        version = version,
+        releaseYear = releaseYear,
+        priceInCents = priceInCents,
+        fuelConsumption = fuelConsumption,
+        maintenanceCostInCents = maintenanceCostInCents,
+    )
 }

@@ -2,7 +2,6 @@ package com.carcatalogue.server
 
 import com.carcatalogue.proto.*
 import com.carcatalogue.server.repository.CarMongoRepo
-import com.carcatalogue.server.repository.CarRepo
 import com.carcatalogue.server.repository.model.CarData
 import com.carcatalogue.server.services.CarCatalogueService
 import com.mongodb.ConnectionString
@@ -14,6 +13,7 @@ import org.litote.kmongo.getCollection
 
 const val CAR_REPO_URL = "mongodb+srv://admin:admin@cluster0.qxqrv.mongodb.net/carrepo?retryWrites=true&w=majority";
 const val CAR_REPO_DB_NAME = "carrepo"
+const val CAR_COLLECTION_NAME = "cars"
 
 class CarCatalogueServer constructor(private val port: Int) {
 
@@ -22,7 +22,7 @@ class CarCatalogueServer constructor(private val port: Int) {
 
     private val server: Server = ServerBuilder
             .forPort(port)
-            .addService(CarCatalogueService(CarMongoRepo(database.getCollection<CarData>("cars"))))
+            .addService(CarCatalogueService(CarMongoRepo(database.getCollection<CarData>(CAR_COLLECTION_NAME))))
             .build()
 
 

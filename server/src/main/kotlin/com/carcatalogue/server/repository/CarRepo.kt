@@ -4,8 +4,20 @@ import com.carcatalogue.server.repository.model.CarData
 import com.mongodb.client.MongoCollection
 import org.litote.kmongo.*
 
+/**
+ * Provides access to the storage of cars.
+ */
 interface CarRepo {
+    /**
+     * Adds a new car to the database.
+     */
     fun addCar(car: CarData)
+
+    /**
+     * Returns the available cars.
+     * @param manufacturer, the manufacturer of the car, if empty, all manufacturers will be included.
+     * @param year, the production year of the car, if empty, all years will be included.
+     */
     fun getAllCars(manufacturer: String? = null, year: Int? = null): List<CarData>
 }
 
