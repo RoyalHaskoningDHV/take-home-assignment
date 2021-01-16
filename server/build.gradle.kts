@@ -1,16 +1,18 @@
 import com.google.protobuf.gradle.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
     kotlin("jvm")
     id("com.google.protobuf")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 dependencies {
     protobuf(project(":protos"))
 
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     implementation("io.grpc:grpc-kotlin-stub:0.1.1")
 
     implementation("com.google.protobuf:protobuf-java:3.6.1")
@@ -20,6 +22,22 @@ dependencies {
     api("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
 
     runtimeOnly("io.grpc:grpc-netty:${rootProject.ext["grpcVersion"]}")
+
+    implementation("org.litote.kmongo:kmongo:4.2.3")
+    implementation("org.litote.kmongo:kmongo-async:4.2.3")
+    implementation("org.litote.kmongo:kmongo-coroutine:4.2.3")
+    annotationProcessor("org.litote.kmongo:kmongo-annotation-processor:4.2.3")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }
 
 protobuf {

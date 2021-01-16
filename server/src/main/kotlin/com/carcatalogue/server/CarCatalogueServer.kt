@@ -1,30 +1,21 @@
-/*
- * Copyright 2020 gRPC authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.carcatalogue.server
 
 import com.carcatalogue.proto.*
+import com.carcatalogue.server.repository.CarMongoRepo
+import com.carcatalogue.server.repository.CarRepo
+import com.carcatalogue.server.services.CarCatalogueService
 import io.grpc.Server
 import io.grpc.ServerBuilder
 
+const val CAR_REPO_URL = "mongodb+srv://admin:admin@cluster0.qxqrv.mongodb.net/carrepo?retryWrites=true&w=majority";
+const val CAR_REPO_DB_NAME = "carrepo"
+
 class CarCatalogueServer constructor(private val port: Int) {
-    val server: Server = ServerBuilder
+    private val server: Server = ServerBuilder
             .forPort(port)
-            .addService(CarCatalogueService())
+            .addService(CarCatalogueService(CarMongoRepo(CAR_REPO_URL, CAR_REPO_DB_NAME)))
             .build()
+
 
     fun start() {
         server.start()
@@ -44,13 +35,6 @@ class CarCatalogueServer constructor(private val port: Int) {
 
     fun blockUntilShutdown() {
         server.awaitTermination()
-    }
-
-    private class CarCatalogueService : SearchCarGrpcKt.SearchCarCoroutineImplBase() {
-
-        override suspend fun search(request: SearchRequest): SearchReply {
-            return SearchReply.newBuilder().addCars(Car.newBuilder().setManufacturer(request.manufacturer).setProductionYear("2010").build()).build()
-        }
     }
 }
 

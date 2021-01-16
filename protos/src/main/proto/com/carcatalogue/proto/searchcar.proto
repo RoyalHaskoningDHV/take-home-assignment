@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
 option java_package = "com.carcatalogue.proto";
@@ -21,15 +22,22 @@ package carcatalogue;
 
 service SearchCar {
   rpc Search (SearchRequest) returns (SearchReply) {}
+  rpc AddCar (Car) returns (google.protobuf.Empty) {}
 }
 
 message SearchRequest {
   string manufacturer = 1;
+  int32 releaseYear = 2;
 }
 message SearchReply {
   repeated Car cars = 1;
 }
 message Car {
   string manufacturer = 1;
-  string productionYear = 2;
+  string model = 2;
+  string version = 3;
+  int32 releaseYear = 4;
+  int32 priceInCents = 5;
+  double fuelConsumption = 6;
+  int32 maintenanceCostInCents = 7;
 }

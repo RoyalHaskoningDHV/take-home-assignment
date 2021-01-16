@@ -1,6 +1,6 @@
 plugins {
     id("com.google.protobuf") version "0.8.13" apply false
-    kotlin("jvm") version "1.3.72" apply false
+    kotlin("jvm") version "1.4.21" apply false
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
 }
 

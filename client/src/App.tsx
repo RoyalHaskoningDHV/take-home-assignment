@@ -1,19 +1,42 @@
 import logo from './logo.svg';
 import './App.css';
 import {SearchCarClient} from "./proto/searchCar_pb_service";
-import {SearchRequest} from "./proto/searchCar_pb";
+import {Car, SearchRequest} from "./proto/searchCar_pb";
+
+const client = new SearchCarClient('http://localhost:8080')
 
 function App() {
 
   async function doStuff () {
-    const client = new SearchCarClient('http://localhost:8080')
-
     const searchRequest = new SearchRequest()
-    searchRequest.setManufacturer("Citroen")
+    searchRequest.setManufacturer("Opel")
     await client.search(searchRequest, (error, responseMessage) => {
-      console.log('response cars!', responseMessage?.getCarsList()[0].getManufacturer(), responseMessage?.getCarsList()[0].getProductionyear())
+      const carList = responseMessage?.getCarsList()
+      if(carList && carList.length > 0) {
+        console.log('response cars!', carList[0].getManufacturer(), carList[0].getReleaseyear(), carList.length)
+      } else {
+        console.log('No cars found')
+      }
       if(error) {
         console.error('ERRR', error)
+      }
+    })
+  }
+
+  async function addCar() {
+    const addCarRequest = new Car()
+    addCarRequest.setManufacturer("Opel")
+    addCarRequest.setModel("Astra")
+    addCarRequest.setReleaseyear(2010)
+    addCarRequest.setPriceincents(20000)
+    addCarRequest.setFuelconsumption(13.4)
+    addCarRequest.setMaintenancecostincents(40000)
+    addCarRequest.setVersion("1.4 Turbo")
+    client.addCar(addCarRequest, (error, responseMessage) => {
+      if(!error) {
+        console.log('successfully added')
+      } else {
+        console.error('Failed to add car :(')
       }
     })
   }
@@ -26,8 +49,11 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <button onClick={doStuff}>
-          Learn React
+          Search cars
         </button>
+
+        <button onClick={addCar}>Add car</button>
+
       </header>
     </div>
   );

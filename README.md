@@ -107,7 +107,10 @@ The application consists of three parts: The server (Kotlin), the client (React)
 
 To start it all up, do the following:
 
-### Server
+### Server (Run locally)
+ - Run `./gradlew CarCatalogueServer`
+
+### Server (compile jar and run stand-along)
  - Run `./gradlew installDist` to compile the code
  - Run `./server/build/install/server/bin/car-catalogue-server` to start the server
 
