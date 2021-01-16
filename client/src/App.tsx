@@ -2,24 +2,29 @@ import logo from './logo.svg';
 import './App.css';
 import {SearchCarClient} from "./proto/searchCar_pb_service";
 import {Car, SearchRequest} from "./proto/searchCar_pb";
+import {useState} from "react";
+import CarList from "./components/CarList";
 
 const client = new SearchCarClient('http://localhost:8080')
 
 function App() {
 
+  const [cars, setCars] = useState<Car[] | undefined>(undefined)
+
   async function doStuff () {
     const searchRequest = new SearchRequest()
     searchRequest.setManufacturer("Opel")
     await client.search(searchRequest, (error, responseMessage) => {
-      const carList = responseMessage?.getCarsList()
-      if(carList && carList.length > 0) {
-        console.log('response cars!', carList[0].getManufacturer(), carList[0].getReleaseyear(), carList.length)
-      } else {
-        console.log('No cars found')
-      }
-      if(error) {
-        console.error('ERRR', error)
-      }
+      setCars(responseMessage?.getCarsList())
+      // const carList = responseMessage?.getCarsList()
+      // if(carList && carList.length > 0) {
+      //   console.log('response cars!', carList[0].getManufacturer(), carList[0].getReleaseyear(), carList.length)
+      // } else {
+      //   console.log('No cars found')
+      // }
+      // if(error) {
+      //   console.error('ERRR', error)
+      // }
     })
   }
 
@@ -53,6 +58,8 @@ function App() {
         </button>
 
         <button onClick={addCar}>Add car</button>
+
+        {cars && <CarList cars={cars}/>}
 
       </header>
     </div>
