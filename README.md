@@ -100,3 +100,23 @@ Based on these stories, please do as follows:
 * You have a team of 3 developers. How would you tackle working together on the stories?
 
 * Can you describe 1 thing that can go wrong with your code once in production?
+
+
+## Running the application
+The application consists of three parts: The server (Kotlin), the client (React) and the Envoy proxy (to make grpc work in the browser).
+
+To start it all up, do the following:
+
+### Server
+ - Run `./gradlew installDist` to compile the code
+ - Run `./server/build/install/server/bin/car-catalogue-server` to start the server
+
+### Envoy
+You need to have Docker installed for this
+ - Run `docker-compose build` to create the docker container
+ - Run `docker-compose up` to start the docker container
+
+### Client
+Execute these commands in the client folder
+ - Run `npm install` to install dependencies
+ - Run `npm start` to start the react web application
