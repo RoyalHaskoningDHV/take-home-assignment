@@ -1,8 +1,7 @@
 package com.carcatalogue.server.repository
 
 import com.carcatalogue.server.repository.model.CarData
-import com.mongodb.ConnectionString
-import com.mongodb.MongoClientSettings
+import com.mongodb.client.MongoCollection
 import org.litote.kmongo.*
 
 interface CarRepo {
@@ -10,11 +9,7 @@ interface CarRepo {
     fun getAllCars(manufacturer: String?, year: Int?): List<CarData>
 }
 
-class CarMongoRepo(databaseConnectionString: String, databaseName: String): CarRepo {
-
-    private val mongoClient = KMongo.createClient(MongoClientSettings.builder().applyConnectionString(ConnectionString(databaseConnectionString)).build())
-    private val database = mongoClient.getDatabase(databaseName)
-    private val carCollection = database.getCollection<CarData>("cars")
+class CarMongoRepo(private val carCollection: MongoCollection<CarData>): CarRepo {
 
     override fun addCar(car: CarData) {
         carCollection.insertOne(car)
