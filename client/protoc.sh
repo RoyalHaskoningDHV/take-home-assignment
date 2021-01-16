@@ -9,7 +9,7 @@ mkdir proto
 cd ../
 
 protoc \
-    --proto_path=./../protos/src/main/proto/io/grpc/examples/animals/ \
+    --proto_path=./../protos/src/main/proto/com/carcatalogue/proto/ \
     --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
     --ts_out=service=grpc-web:./src/proto \
     --js_out=import_style=commonjs,binary:./src/proto \

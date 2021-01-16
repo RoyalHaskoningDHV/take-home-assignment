@@ -14,18 +14,18 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "io.grpc.examples.animals";
-option java_outer_classname = "SheepProto";
+option java_package = "com.carcatalogue.proto";
+option java_outer_classname = "DogProto";
 
 package animals;
 
-service Sheep {
-  rpc Baa (BaaRequest) returns (BaaReply) {}
+service Dog {
+  rpc Bark (BarkRequest) returns (BarkReply) {}
 }
 
-message BaaRequest {
+message BarkRequest {
 }
 
-message BaaReply {
+message BarkReply {
   string message = 1;
 }

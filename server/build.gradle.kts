@@ -52,11 +52,11 @@ protobuf {
 tasks.register<JavaExec>("AnimalsServer") {
     dependsOn("classes")
     classpath = sourceSets["main"].runtimeClasspath
-    main = "io.grpc.examples.animals.AnimalsServerKt"
+    main = "com.carcatalogue.server.AnimalsServerKt"
 }
 
 val animalsServerStartScripts = tasks.register<CreateStartScripts>("animalsServerStartScripts") {
-    mainClassName = "io.grpc.examples.animals.AnimalsServerKt"
+    mainClassName = "com.carcatalogue.server.AnimalsServerKt"
     applicationName = "animals-server"
     outputDir = tasks.named<CreateStartScripts>("startScripts").get().outputDir
     classpath = tasks.named<CreateStartScripts>("startScripts").get().classpath

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.grpc.examples.animals
+package com.carcatalogue.server
 
+import com.carcatalogue.proto.*
 import io.grpc.Server
 import io.grpc.ServerBuilder
 
@@ -48,22 +49,19 @@ class AnimalsServer constructor(private val port: Int) {
     }
 
     private class DogService : DogGrpcKt.DogCoroutineImplBase() {
-        override suspend fun bark(request: BarkRequest) = BarkReply
-                .newBuilder()
+        override suspend fun bark(request: BarkRequest) = BarkReply.newBuilder()
                 .setMessage("Bark!")
                 .build()
     }
 
     private class PigService : PigGrpcKt.PigCoroutineImplBase() {
-        override suspend fun oink(request: OinkRequest) = OinkReply
-                .newBuilder()
+        override suspend fun oink(request: OinkRequest) = OinkReply.newBuilder()
                 .setMessage("Oink!")
                 .build()
     }
 
     private class SheepService : SheepGrpcKt.SheepCoroutineImplBase() {
-        override suspend fun baa(request: BaaRequest) = BaaReply
-                .newBuilder()
+        override suspend fun baa(request: BaaRequest) = BaaReply.newBuilder()
                 .setMessage("Baa!")
                 .build()
     }
