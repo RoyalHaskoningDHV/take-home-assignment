@@ -24,9 +24,6 @@ dependencies {
     runtimeOnly("io.grpc:grpc-netty:${rootProject.ext["grpcVersion"]}")
 
     implementation("org.litote.kmongo:kmongo:4.2.3")
-    implementation("org.litote.kmongo:kmongo-async:4.2.3")
-    implementation("org.litote.kmongo:kmongo-coroutine:4.2.3")
-    annotationProcessor("org.litote.kmongo:kmongo-annotation-processor:4.2.3")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")

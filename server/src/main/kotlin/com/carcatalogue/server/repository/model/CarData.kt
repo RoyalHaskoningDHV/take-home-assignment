@@ -1,8 +1,5 @@
 package com.carcatalogue.server.repository.model
 
-import org.litote.kmongo.Data
-
-@Data
 data class CarData(
     val model: String,
     val manufacturer: String,
