@@ -6,7 +6,7 @@ import org.litote.kmongo.*
 
 interface CarRepo {
     fun addCar(car: CarData)
-    fun getAllCars(manufacturer: String?, year: Int?): List<CarData>
+    fun getAllCars(manufacturer: String? = null, year: Int? = null): List<CarData>
 }
 
 class CarMongoRepo(private val carCollection: MongoCollection<CarData>): CarRepo {

@@ -1,11 +1,9 @@
 package com.carcatalogue.server.services
 
-import com.carcatalogue.proto.Car
-import com.carcatalogue.proto.SearchCarGrpcKt
-import com.carcatalogue.proto.SearchReply
-import com.carcatalogue.proto.SearchRequest
+import com.carcatalogue.proto.*
 import com.carcatalogue.server.repository.CarRepo
 import com.carcatalogue.server.repository.model.CarData
+import com.carcatalogue.server.services.recommendations.AnnualCostsRecommendation
 import com.google.protobuf.Empty
 
 class CarCatalogueService(private val carRepo: CarRepo) : SearchCarGrpcKt.SearchCarCoroutineImplBase() {
@@ -37,6 +35,20 @@ class CarCatalogueService(private val carRepo: CarRepo) : SearchCarGrpcKt.Search
         )
 
         return Empty.getDefaultInstance()
+    }
+
+    override suspend fun rankCarsOnAnnualCosts(request: AnnualCostsRequest): AnnualCostsReply {
+        val carData = AnnualCostsRecommendation()
+            .sortByAnnualCosts(carRepo.getAllCars(), request.fuelPriceInCents, request.travelDistancePerMonth)
+            .map {
+                CarAnnualCosts
+                    .newBuilder()
+                    .setCar(it.car.toResponseModel())
+                    .setAnnualCosts(it.annualCosts)
+                    .build()
+            }
+
+        return AnnualCostsReply.newBuilder().addAllCars(carData).build()
     }
 }
 

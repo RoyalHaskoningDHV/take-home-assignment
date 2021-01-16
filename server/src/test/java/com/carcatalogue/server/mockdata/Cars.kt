@@ -3,6 +3,14 @@ package com.carcatalogue.server.mockdata
 import com.carcatalogue.server.repository.model.CarData
 
 object Cars {
+    val mercedesB = CarData(model = "B-Klasse",
+        manufacturer = "Mercedes",
+        version = "180",
+        releaseYear = 2008,
+        priceInCents = 3500000,
+        fuelConsumption = 10.0,
+        maintenanceCostInCents = 30000
+    )
     val opelAstra = CarData(model = "Astra",
         manufacturer = "Opel",
         version = "1.4 Turbo",

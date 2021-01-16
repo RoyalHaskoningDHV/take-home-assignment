@@ -23,6 +23,7 @@ package carcatalogue;
 service SearchCar {
   rpc Search (SearchRequest) returns (SearchReply) {}
   rpc AddCar (Car) returns (google.protobuf.Empty) {}
+  rpc RankCarsOnAnnualCosts (AnnualCostsRequest) returns (AnnualCostsReply) {}
 }
 
 message SearchRequest {
@@ -32,6 +33,19 @@ message SearchRequest {
 message SearchReply {
   repeated Car cars = 1;
 }
+
+message AnnualCostsRequest {
+  int32 fuelPriceInCents = 1;
+  int32 travelDistancePerMonth = 2;
+}
+message AnnualCostsReply {
+  repeated CarAnnualCosts cars = 1;
+}
+message CarAnnualCosts {
+  Car car = 1;
+  int64 annualCosts = 2;
+}
+
 message Car {
   string manufacturer = 1;
   string model = 2;
