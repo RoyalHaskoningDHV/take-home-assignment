@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import {SearchCarClient} from "./proto/searchCar_pb_service";
 import {AnnualCostsRequest, Car, SearchRequest} from "./proto/searchCar_pb";
 import {useState} from "react";
@@ -59,10 +59,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+
         <button onClick={doStuff}>
           Search cars
         </button>
