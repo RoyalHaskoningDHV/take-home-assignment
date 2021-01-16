@@ -16,17 +16,9 @@ class CarCatalogueService(private val carRepo: CarRepo) : SearchCarGrpcKt.Search
         val releaseYear = if(request.releaseYear != 0) request.releaseYear else null
 
         val cars = carRepo.getAllCars(request.manufacturer, releaseYear)
-        System.out.println("Found cars ${cars.size}")
+
         val carResponseList = cars.map {
-            Car.newBuilder()
-                .setManufacturer(it.manufacturer)
-                .setModel(it.model)
-                .setPriceInCents(it.priceInCents)
-                .setVersion(it.version)
-                .setReleaseYear(it.releaseYear)
-                .setFuelConsumption(it.fuelConsumption)
-                .setMaintenanceCostInCents(it.maintenanceCostInCents)
-                .build()
+            it.toResponseModel()
         }
         return SearchReply.newBuilder().addAllCars(carResponseList).build()
     }
@@ -46,4 +38,16 @@ class CarCatalogueService(private val carRepo: CarRepo) : SearchCarGrpcKt.Search
 
         return Empty.getDefaultInstance()
     }
+}
+
+fun CarData.toResponseModel(): Car {
+    return Car.newBuilder()
+        .setManufacturer(manufacturer)
+        .setModel(model)
+        .setPriceInCents(priceInCents)
+        .setVersion(version)
+        .setReleaseYear(releaseYear)
+        .setFuelConsumption(fuelConsumption)
+        .setMaintenanceCostInCents(maintenanceCostInCents)
+        .build()
 }
