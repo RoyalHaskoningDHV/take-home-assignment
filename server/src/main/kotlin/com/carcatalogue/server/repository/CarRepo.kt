@@ -6,6 +6,7 @@ import org.litote.kmongo.*
 
 /**
  * Provides access to the storage of cars.
+ * Note, right now this uses the synchronous driver, better thread management should be considered when creating an actual application.
  */
 interface CarRepo {
     /**
