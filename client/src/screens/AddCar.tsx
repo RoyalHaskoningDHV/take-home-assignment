@@ -4,8 +4,10 @@ import {useState} from "react";
 
 import "../components/Surface.scss"
 import FormInputField from "../components/FormInputField";
+import {useAlert} from "../providers/AlertProvider";
 
 export default function AddCar() {
+    const {showAlert} = useAlert()
 
     const searchCarClient = useSearchCarClient()
 
@@ -28,10 +30,10 @@ export default function AddCar() {
         addCarRequest.setVersion(version)
         searchCarClient.addCar(addCarRequest, (error, responseMessage) => {
             if(!error) {
-                console.log('successfully added')
+                showAlert({title: 'Success', message: 'Car has been added', type: 'INFO'})
                 clearForm()
             } else {
-                console.error('Failed to add car :(')
+                showAlert({title: 'Error', message: `Failed to add car, ${error}`, type: 'ERROR'})
             }
         })
     }
