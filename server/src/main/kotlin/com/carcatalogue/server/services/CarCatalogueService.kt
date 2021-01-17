@@ -13,10 +13,12 @@ class CarCatalogueService(private val carRepo: CarRepo) : SearchCarGrpcKt.Search
 
     override suspend fun search(request: SearchRequest): SearchReply {
         // SearchRequest is defaulting the releaseYear to 0 if none is given,
+        // SearchRequest is defaulting the manufacturer to "" if none is given,
         // in a production environment it would be advised to research how nullability can be done correctly.
         val releaseYear = if(request.releaseYear != 0) request.releaseYear else null
+        val manufacturer = if(request.manufacturer.isNotEmpty()) request.manufacturer else null
 
-        val cars = carRepo.getAllCars(request.manufacturer, releaseYear)
+        val cars = carRepo.getAllCars(manufacturer, releaseYear)
         return SearchReply
             .newBuilder()
             .addAllCars(cars.map { it.toResponseModel() })
