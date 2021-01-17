@@ -10,10 +10,10 @@
     list-style: none;
     padding: 8px 16px;
     a {
-      color: $navigation-inactive;
+      color: $color-navigation-inactive;
 
       &.active {
-        color: $navigation-active;
+        color: $color-navigation-active;
       }
     }
 

@@ -1,0 +1,23 @@
+@import "Constants";
+
+label {
+  position: relative;
+
+  p {
+    margin: 0 2px; // 2px to align with input text.
+    font-size: 12px;
+  }
+  input {
+    width: 100%;
+    margin-bottom: 16px;
+    border: none;
+    border-bottom: 1px solid $color-inactive;
+    background: transparent;
+    font-weight: bold;
+
+    &:focus {
+      border-color: $color-highlight;
+      outline: none;
+    }
+  }
+}

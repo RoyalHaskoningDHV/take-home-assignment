@@ -1,4 +1,7 @@
+//noinspection CssInvalidAtRule
+@import-normalize;
 @import "components/Constants";
+@import "components/Input";
 
 * {
   font-family: 'Roboto', sans-serif;
@@ -6,8 +9,17 @@
 }
 
 a {
-  color: $link-color;
+  color: $color-link;
 }
 
 .App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.route-content {
+  flex: 1 0 auto;
+  padding: 16px;
+  background-color: $color-screen-background;
 }

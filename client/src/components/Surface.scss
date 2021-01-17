@@ -1,0 +1,9 @@
+@import "Constants";
+
+// Surface is used to create a separate section in the screen to group controls.
+.surface {
+  background-color: $color-surface;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: $shadow-elevation-4;
+}
