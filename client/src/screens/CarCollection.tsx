@@ -32,17 +32,21 @@ export default function CarCollection() {
     }
 
 
-    return (<div className="form-list-container">
-        <form className="surface form-list-form" onSubmit={(event) => {searchCars(); event.preventDefault()}}>
-            <h2>Filter cars</h2>
-            <FormInputField label="Manufacturer" value={manufacturer} onChange={setManufacturer} />
-            <FormInputField label="Release year" value={year} onChange={setYear} />
+    return (
+        <>
+            <h1>Car collection</h1>
+            <div className="form-list-container">
+            <form className="surface form-list-form" onSubmit={(event) => {searchCars(); event.preventDefault()}}>
+                <h2>Filters</h2>
+                <FormInputField label="Manufacturer" value={manufacturer} onChange={setManufacturer} />
+                <FormInputField label="Release year" value={year} onChange={setYear} />
 
-            <button type="submit">Search</button>
-        </form>
-        <div className="form-list-list">
-            {loading && <div>Loading...</div>}
-            {!loading && cars && <CarList cars={cars}/>}
-        </div>
-    </div>)
+                <button type="submit">Search</button>
+            </form>
+            <div className="form-list-list">
+                {loading && <div>Loading...</div>}
+                {!loading && cars && <CarList cars={cars}/>}
+            </div>
+            </div>
+        </>)
 }
