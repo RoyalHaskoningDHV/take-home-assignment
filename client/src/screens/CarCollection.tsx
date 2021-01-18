@@ -46,6 +46,7 @@ export default function CarCollection() {
             <div className="form-list-list">
                 {loading && <div>Loading...</div>}
                 {!loading && cars && <CarList cars={cars}/>}
+                {!loading && !cars?.length && <p>No cars found</p>}
             </div>
             </div>
         </>)
