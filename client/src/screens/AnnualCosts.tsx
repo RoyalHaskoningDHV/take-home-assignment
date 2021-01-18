@@ -35,7 +35,8 @@ export default function AnnualCosts() {
     return (<div>
         <h1>Annual costs</h1>
         <div className="form-list-container">
-            <form className="form-list-form" onSubmit={async (event) => {await getAnnualCostsList(); event.preventDefault()}}>
+            <form className="surface form-list-form" onSubmit={async (event) => {await getAnnualCostsList(); event.preventDefault()}}>
+                <h2>Cost parameters</h2>
                 <FormInputField label="Fuel price per litre" value={fuelPrice} onChange={setFuelPrice} type="number"/>
                 <FormInputField label="Travel distance per month" value={travelDistancePerMonth} onChange={setTravelDistancePerMonth} type="number"/>
 
