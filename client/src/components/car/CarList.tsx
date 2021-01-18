@@ -1,5 +1,7 @@
-import {Car} from "../proto/searchCar_pb";
+import {Car} from "../../proto/searchCar_pb";
 import CarListItem from "./CarListItem";
+
+import "./CarList.scss"
 
 type Props = {
     cars: Car[]
@@ -7,7 +9,7 @@ type Props = {
 
 export default function CarList({cars}: Props) {
     return (
-        <ol>
+        <ol className="car-list">
             {cars.map((car) => CarListItem({car}))}
         </ol>
     )

@@ -1,0 +1,15 @@
+.form-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  
+  .form-list-form {
+    flex: 0 0 300px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .form-list-list {
+    flex: 1 0 200px;
+  }
+}

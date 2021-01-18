@@ -1,0 +1,20 @@
+@import "../Constants";
+
+.car-list-item {
+  flex: 1 0 300px;
+  list-style: none;
+  border: 1px solid $color-border;
+  padding: 8px;
+  background-color: $color-surface;
+
+  .car-list-item-heading {
+    margin: 0 0 8px 0;
+  }
+  .car-list-item-sub-heading {
+    margin-top: 0;
+  }
+
+  .car-list-item-specs {
+    padding-left: 20px;
+  }
+}

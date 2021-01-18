@@ -5,5 +5,6 @@
   background-color: $color-surface;
   padding: 16px;
   border-radius: 8px;
-  box-shadow: $shadow-elevation-4;
+  box-shadow: $shadow-elevation-2;
+  border: 1px solid $color-border;
 }

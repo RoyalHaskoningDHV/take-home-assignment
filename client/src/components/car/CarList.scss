@@ -1,0 +1,9 @@
+.car-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  align-items: stretch;
+  column-gap: 8px;
+  row-gap: 8px;
+  padding-left: 0;
+  margin: 0;
+}
