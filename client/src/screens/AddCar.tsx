@@ -56,21 +56,23 @@ export default function AddCar() {
         await addCar();
     }
 
-    return (<div>
-        <h1>Add new car to the database</h1>
-        <p>Fill out this form to add a new car</p>
+    return (
+        <>
+            <h1>Add new car to the database</h1>
+            <p>Fill out this form to add a new car</p>
 
-        <form onSubmit={handleSubmit} className="surface">
+            <form onSubmit={handleSubmit} className="surface">
 
-            <FormInputField label="Manufacturer" value={manufacturer} onChange={setManufacturer} required />
-            <FormInputField label="Model" value={model} onChange={setModel} required />
-            <FormInputField label="Version" value={version} onChange={setVersion} required />
-            <FormInputField label="Release year" value={releaseYear} onChange={setReleaseYear} required type="number" />
-            <FormInputField label="Price" value={price} onChange={setPrice} required type="number" />
-            <FormInputField label="Fuel consumption (number of km/litre)" placeholder="13.5" value={fuelConsumption} onChange={setFuelConsumption} required type="number" />
-            <FormInputField label="Maintenance cost per year" value={maintenanceCost} onChange={setMaintenanceCost} required type="number" />
+                <FormInputField label="Manufacturer" value={manufacturer} onChange={setManufacturer} required />
+                <FormInputField label="Model" value={model} onChange={setModel} required />
+                <FormInputField label="Version" value={version} onChange={setVersion} required />
+                <FormInputField label="Release year" value={releaseYear} onChange={setReleaseYear} required type="number" />
+                <FormInputField label="Price" value={price} onChange={setPrice} required type="number" />
+                <FormInputField label="Fuel consumption (number of km/litre)" placeholder="13.5" value={fuelConsumption} onChange={setFuelConsumption} required type="number" />
+                <FormInputField label="Maintenance cost per year" value={maintenanceCost} onChange={setMaintenanceCost} required type="number" />
 
-            <button type="submit">Save car</button>
-        </form>
-    </div>)
+                <button type="submit">Save car</button>
+            </form>
+        </>
+    )
 }

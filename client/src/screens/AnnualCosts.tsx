@@ -41,25 +41,27 @@ export default function AnnualCosts() {
         await searchAnnualCostsList();
     }
 
-    return (<div>
-        <h1>Annual costs</h1>
-        <div className="form-list-container">
-            <form className="surface form-list-form" onSubmit={handleSubmit}>
-                <h2>Cost parameters</h2>
-                <FormInputField label="Fuel price per litre" value={fuelPrice} onChange={setFuelPrice} type="number"/>
-                <FormInputField label="Travel distance per month" value={travelDistancePerMonth} onChange={setTravelDistancePerMonth} type="number"/>
+    return (
+        <>
+            <h1>Annual costs</h1>
+            <div className="form-list-container">
+                <form className="surface form-list-form" onSubmit={handleSubmit}>
+                    <h2>Cost parameters</h2>
+                    <FormInputField label="Fuel price per litre" value={fuelPrice} onChange={setFuelPrice} type="number"/>
+                    <FormInputField label="Travel distance per month" value={travelDistancePerMonth} onChange={setTravelDistancePerMonth} type="number"/>
 
-                <button type="submit">Search</button>
-            </form>
-            <div className="form-list-list">
-                {loading && <p>Loading...</p>}
+                    <button type="submit">Search</button>
+                </form>
+                <div className="form-list-list">
+                    {loading && <p>Loading...</p>}
 
-                {!loading && cars && <AnnualCostCarList
-                    numberOfYears={SHOW_COSTS_NUMBER_OF_YEARS}
-                    cars={cars.map((car) => car).filter(notEmpty)}/>}
+                    {!loading && cars && <AnnualCostCarList
+                        numberOfYears={SHOW_COSTS_NUMBER_OF_YEARS}
+                        cars={cars.map((car) => car).filter(notEmpty)}/>}
 
-                {!loading && !cars?.length && <p>No cars found</p>}
+                    {!loading && !cars?.length && <p>No cars found</p>}
+                </div>
             </div>
-        </div>
-    </div>)
+        </>
+    )
 }

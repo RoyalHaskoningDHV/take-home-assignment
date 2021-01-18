@@ -52,5 +52,6 @@ export default function CarCollection() {
                 {!loading && !cars?.length && <p>No cars found</p>}
             </div>
             </div>
-        </>)
+        </>
+    )
 }
