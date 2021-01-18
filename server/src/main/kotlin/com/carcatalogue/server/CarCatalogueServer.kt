@@ -8,6 +8,7 @@ import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import io.grpc.Server
 import io.grpc.ServerBuilder
+import org.apache.logging.log4j.kotlin.Logging
 import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollection
 
@@ -15,7 +16,7 @@ const val CAR_REPO_URL = "mongodb+srv://admin:admin@cluster0.qxqrv.mongodb.net/c
 const val CAR_REPO_DB_NAME = "carrepo"
 const val CAR_COLLECTION_NAME = "cars"
 
-class CarCatalogueServer constructor(private val port: Int) {
+class CarCatalogueServer constructor(private val port: Int): Logging {
 
     private val mongoClient = KMongo.createClient(MongoClientSettings.builder().applyConnectionString(ConnectionString(CAR_REPO_URL)).build())
     private val database = mongoClient.getDatabase(CAR_REPO_DB_NAME)
@@ -28,12 +29,12 @@ class CarCatalogueServer constructor(private val port: Int) {
 
     fun start() {
         server.start()
-        println("Server started, listening on $port")
+        logger.info("Server started, listening on $port")
         Runtime.getRuntime().addShutdownHook(
                 Thread {
-                    println("*** shutting down gRPC server since JVM is shutting down")
+                    logger.info("*** shutting down gRPC server since JVM is shutting down")
                     this@CarCatalogueServer.stop()
-                    println("*** server shut down")
+                    logger.info("*** server shut down")
                 }
         )
     }

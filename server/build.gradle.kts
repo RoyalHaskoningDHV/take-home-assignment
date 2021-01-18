@@ -25,6 +25,10 @@ dependencies {
 
     implementation("org.litote.kmongo:kmongo:4.2.3")
 
+    implementation("org.apache.logging.log4j:log4j-core:2.14.0")
+    implementation("org.apache.logging.log4j:log4j-api-kotlin:1.0.0")
+    implementation("org.slf4j:slf4j-log4j12:1.7.28")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("de.bwaldvogel:mongo-java-server:1.37.0")
