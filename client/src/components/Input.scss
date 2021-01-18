@@ -14,6 +14,7 @@ label {
     border-bottom: 1px solid $color-inactive;
     background: transparent;
     font-weight: bold;
+    color: $color-highlight;
 
     &:focus {
       border-color: $color-highlight;

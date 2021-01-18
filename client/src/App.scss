@@ -1,12 +1,14 @@
 //noinspection CssInvalidAtRule
 @import-normalize;
 @import "components/Constants";
+@import "components/Text";
 @import "components/Input";
 @import "components/Buttons";
 
 * {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
+  color: $color-text-default;
 }
 
 a {

@@ -8,12 +8,16 @@
   }
   li {
     list-style: none;
-    padding: 8px 16px;
     a {
+      display: inline-block;
+      padding: 8px 16px;
       color: $color-navigation-inactive;
+      text-decoration: none;
+      font-weight: bold;
 
       &.active {
         color: $color-navigation-active;
+        border-bottom: 1px solid $color-navigation-active
       }
     }
 
