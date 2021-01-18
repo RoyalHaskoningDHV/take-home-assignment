@@ -51,15 +51,15 @@ export default function AnnualCosts() {
 
                 <button type="submit">Search</button>
             </form>
-        </div>
-        <div className="form-list-list">
-            {loading && <p>Loading...</p>}
+            <div className="form-list-list">
+                {loading && <p>Loading...</p>}
 
-            {!loading && cars && <AnnualCostCarList
-                numberOfYears={SHOW_COSTS_NUMBER_OF_YEARS}
-                cars={cars.map((car) => car).filter(notEmpty)}/>}
+                {!loading && cars && <AnnualCostCarList
+                    numberOfYears={SHOW_COSTS_NUMBER_OF_YEARS}
+                    cars={cars.map((car) => car).filter(notEmpty)}/>}
 
-            {!loading && !cars?.length && <p>No cars found</p>}
+                {!loading && !cars?.length && <p>No cars found</p>}
+            </div>
         </div>
     </div>)
 }
