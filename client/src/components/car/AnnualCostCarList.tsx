@@ -14,13 +14,21 @@ export default function AnnualCostCarList({cars, numberOfYears}: Props) {
         return (car.getAnnualcosts() * numberOfYears) / 100
     }
 
+    function renderCarWithCosts(carWithCosts: CarAnnualCosts) {
+        // TODO: gRPC's nullability isn't great with typescript, in a real application, we need to figure out how to deal with this.
+        const car = carWithCosts.getCar()
+        if(car) {
+            return (
+                <CarListItem car={car}>
+                    <p>Annual costs: &euro; {getCosts(carWithCosts)}</p>
+                </CarListItem>
+            )
+        }
+    }
+
     return (
         <ol className="car-list">
-            {cars.map((car) =>
-                <CarListItem car={car.getCar()}>
-                    <p>Annual costs: &euro; {getCosts(car)}</p>
-                </CarListItem>)
-            }
+            {cars.map(renderCarWithCosts)}
         </ol>
     )
 }

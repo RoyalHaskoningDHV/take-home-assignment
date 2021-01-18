@@ -3,9 +3,9 @@ import {Car} from "../../proto/searchCar_pb";
 import "./CarListItem.scss"
 import {PropsWithChildren} from "react";
 
-type Props = {
+type Props = PropsWithChildren<{
     car: Car
-} & PropsWithChildren<any>
+}>
 
 export default function CarListItem({car, children}: Props) {
     return (
