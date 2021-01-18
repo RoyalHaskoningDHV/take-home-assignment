@@ -11,7 +11,7 @@ export type AlertProps = {
     buttons?: {label: string, onClick: () => void}[]
 }
 
-export default function Alert({type, title, message, buttons}: AlertProps) {
+export default function Alert({title, message, buttons}: AlertProps) {
     const {dismissAlert} = useAlert()
 
     return (<div className="alert-backdrop">
