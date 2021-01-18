@@ -1,12 +1,13 @@
 import {Car} from "../../proto/searchCar_pb";
 
 import "./CarListItem.scss"
+import {PropsWithChildren} from "react";
 
 type Props = {
     car: Car
-}
+} & PropsWithChildren<any>
 
-export default function CarListItem({car}: Props) {
+export default function CarListItem({car, children}: Props) {
     return (
         // TODO: Add a DB id as key here, so we can use react caching.
         <li className="car-list-item" key={car.getManufacturer()+car.getModel()+car.getReleaseyear()+Math.random()}>
@@ -18,6 +19,7 @@ export default function CarListItem({car}: Props) {
                 <li>Fuel consumption km/l: {car.getFuelconsumption()}</li>
                 <li>Maintenance per year: {car.getMaintenancecostincents() / 100}</li>
             </ul>
+            {children}
         </li>
     )
 }
