@@ -28,7 +28,7 @@ export default function CarCollection() {
         } finally {
             setLoading(false)
         }
-    }, [searchCarClient, year, manufacturer])
+    }, [searchCarClient, showAlert, year, manufacturer])
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();

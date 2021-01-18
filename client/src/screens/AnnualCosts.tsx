@@ -34,7 +34,7 @@ export default function AnnualCosts() {
         } finally {
             setLoading(false)
         }
-    }, [searchCarClient, fuelPrice, travelDistancePerMonth])
+    }, [searchCarClient, showAlert, fuelPrice, travelDistancePerMonth])
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();

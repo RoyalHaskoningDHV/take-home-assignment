@@ -37,7 +37,7 @@ export default function AddCar() {
         } catch (e) {
             showAlert({title: 'Error', message: `Failed to add car, ${e}`, type: 'ERROR'})
         }
-    }, [searchCarClient, manufacturer, model, releaseYear, price, fuelConsumption, maintenanceCost, version])
+    }, [searchCarClient, showAlert, manufacturer, model, releaseYear, price, fuelConsumption, maintenanceCost, version])
 
     function clearForm() {
         [
