@@ -10,6 +10,8 @@ import {useAlert} from "../providers/AlertProvider";
 import AnnualCostCarList from "../components/car/AnnualCostCarList";
 import {searchAnnualCostRecommendation} from "../services/CarCollectionService";
 
+const SHOW_COSTS_NUMBER_OF_YEARS = 4;
+
 export default function AnnualCosts() {
 
     const {showAlert} = useAlert()
@@ -52,7 +54,11 @@ export default function AnnualCosts() {
         </div>
         <div className="form-list-list">
             {loading && <p>Loading...</p>}
-            {!loading && cars && <AnnualCostCarList cars={cars.map((car) => car).filter(notEmpty)}/>}
+
+            {!loading && cars && <AnnualCostCarList
+                numberOfYears={SHOW_COSTS_NUMBER_OF_YEARS}
+                cars={cars.map((car) => car).filter(notEmpty)}/>}
+
             {!loading && !cars?.length && <p>No cars found</p>}
         </div>
     </div>)
