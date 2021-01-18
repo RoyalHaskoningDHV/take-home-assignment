@@ -1,11 +1,12 @@
 import {Car} from "../proto/searchCar_pb";
 import useSearchCarClient from "../hooks/useSearchCarClient";
-import {useState} from "react";
+import {FormEvent, useCallback, useState} from "react";
 
 import "../components/Surface.scss"
 import FormInputField from "../components/FormInputField";
 import {useAlert} from "../providers/AlertProvider";
 import {toCents} from "../utils/NumberUtils";
+import {saveCarSpecifications} from "../services/CarCollectionService";
 
 export default function AddCar() {
     const {showAlert} = useAlert()
@@ -20,24 +21,23 @@ export default function AddCar() {
     const [maintenanceCost, setMaintenanceCost] = useState('')
     const [version, setVersion] = useState('')
 
-    async function addCar() {
-        const addCarRequest = new Car()
-        addCarRequest.setManufacturer(manufacturer)
-        addCarRequest.setModel(model)
-        addCarRequest.setReleaseyear(parseInt(releaseYear))
-        addCarRequest.setPriceincents(toCents(parseFloat(price)))
-        addCarRequest.setFuelconsumption(parseFloat(fuelConsumption))
-        addCarRequest.setMaintenancecostincents(toCents(parseFloat(maintenanceCost)))
-        addCarRequest.setVersion(version)
-        searchCarClient.addCar(addCarRequest, (error, responseMessage) => {
-            if(!error) {
-                showAlert({title: 'Success', message: 'Car has been added', type: 'INFO'})
-                clearForm()
-            } else {
-                showAlert({title: 'Error', message: `Failed to add car, ${error}`, type: 'ERROR'})
-            }
-        })
-    }
+    const addCar = useCallback(async () => {
+        try {
+            const addCarRequest = new Car()
+            addCarRequest.setManufacturer(manufacturer)
+            addCarRequest.setModel(model)
+            addCarRequest.setReleaseyear(parseInt(releaseYear))
+            addCarRequest.setPriceincents(toCents(parseFloat(price)))
+            addCarRequest.setFuelconsumption(parseFloat(fuelConsumption))
+            addCarRequest.setMaintenancecostincents(toCents(parseFloat(maintenanceCost)))
+            addCarRequest.setVersion(version)
+            await saveCarSpecifications(searchCarClient, addCarRequest)
+            showAlert({title: 'Success', message: 'Car has been added', type: 'INFO'})
+            clearForm()
+        } catch (e) {
+            showAlert({title: 'Error', message: `Failed to add car, ${e}`, type: 'ERROR'})
+        }
+    }, [searchCarClient, manufacturer, model, releaseYear, price, fuelConsumption, maintenanceCost, version])
 
     function clearForm() {
         [
@@ -51,11 +51,16 @@ export default function AddCar() {
         ].forEach((fn) => fn(''))
     }
 
+    async function handleSubmit(event: FormEvent) {
+        event.preventDefault();
+        await addCar();
+    }
+
     return (<div>
         <h1>Add new car to the database</h1>
         <p>Fill out this form to add a new car</p>
 
-        <form onSubmit={(event) => {addCar(); event.preventDefault()}} className="surface">
+        <form onSubmit={handleSubmit} className="surface">
 
             <FormInputField label="Manufacturer" value={manufacturer} onChange={setManufacturer} required />
             <FormInputField label="Model" value={model} onChange={setModel} required />

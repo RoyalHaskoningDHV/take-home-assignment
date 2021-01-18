@@ -1,13 +1,14 @@
-import {AnnualCostsRequest, CarAnnualCosts} from "../proto/searchCar_pb";
+import {CarAnnualCosts} from "../proto/searchCar_pb";
 import useSearchCarClient from "../hooks/useSearchCarClient";
 
 import "../components/FormListLayout.scss"
 import FormInputField from "../components/FormInputField";
-import {useState} from "react";
+import {FormEvent, useCallback, useState} from "react";
 import {notEmpty} from "../utils/ArrayUtils";
 import {toCents} from "../utils/NumberUtils";
 import {useAlert} from "../providers/AlertProvider";
 import AnnualCostCarList from "../components/car/AnnualCostCarList";
+import {searchAnnualCostRecommendation} from "../services/CarCollectionService";
 
 export default function AnnualCosts() {
 
@@ -17,25 +18,31 @@ export default function AnnualCosts() {
     const [fuelPrice, setFuelPrice] = useState('0')
     const [travelDistancePerMonth, setTravelDistancePerMonth] = useState('0')
     const [cars, setCars] = useState<CarAnnualCosts[]>()
+    const [loading, setLoading] = useState(false)
 
-    async function getAnnualCostsList() {
-        const annualCostRequest = new AnnualCostsRequest()
-        annualCostRequest.setFuelpriceincents(toCents(parseFloat(fuelPrice)))
-        annualCostRequest.setTraveldistancepermonth(parseFloat(travelDistancePerMonth))
+    const searchAnnualCostsList = useCallback(async () => {
+        try {
+            setLoading(true)
+            const fuelPriceInCents = toCents(parseFloat(fuelPrice))
+            const parsedTravelDistance = parseFloat(travelDistancePerMonth)
+            const carResultList = await searchAnnualCostRecommendation(searchCarClient, fuelPriceInCents, parsedTravelDistance)
+            setCars(carResultList)
+        } catch (e) {
+            showAlert({type: 'ERROR', title: 'Failed to retrieve cars', message: e.message})
+        } finally {
+            setLoading(false)
+        }
+    }, [searchCarClient, fuelPrice, travelDistancePerMonth])
 
-        await searchCarClient.rankCarsOnAnnualCosts(annualCostRequest, (error, responseMessage) => {
-            if(error) {
-                showAlert({title: 'Error', message: `Failed to retrieve cars ${error.message}`, type: 'ERROR'})
-            } else {
-                setCars(responseMessage?.getCarsList())
-            }
-        })
+    async function handleSubmit(event: FormEvent) {
+        event.preventDefault();
+        await searchAnnualCostsList();
     }
 
     return (<div>
         <h1>Annual costs</h1>
         <div className="form-list-container">
-            <form className="surface form-list-form" onSubmit={async (event) => {await getAnnualCostsList(); event.preventDefault()}}>
+            <form className="surface form-list-form" onSubmit={handleSubmit}>
                 <h2>Cost parameters</h2>
                 <FormInputField label="Fuel price per litre" value={fuelPrice} onChange={setFuelPrice} type="number"/>
                 <FormInputField label="Travel distance per month" value={travelDistancePerMonth} onChange={setTravelDistancePerMonth} type="number"/>
@@ -44,7 +51,9 @@ export default function AnnualCosts() {
             </form>
         </div>
         <div className="form-list-list">
-            {cars && <AnnualCostCarList cars={cars.map((car) => car).filter(notEmpty)}/>}
+            {loading && <p>Loading...</p>}
+            {!loading && cars && <AnnualCostCarList cars={cars.map((car) => car).filter(notEmpty)}/>}
+            {!loading && !cars?.length && <p>No cars found</p>}
         </div>
     </div>)
 }
