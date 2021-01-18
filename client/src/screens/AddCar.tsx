@@ -5,6 +5,7 @@ import {useState} from "react";
 import "../components/Surface.scss"
 import FormInputField from "../components/FormInputField";
 import {useAlert} from "../providers/AlertProvider";
+import {toCents} from "../utils/NumberUtils";
 
 export default function AddCar() {
     const {showAlert} = useAlert()
@@ -24,9 +25,9 @@ export default function AddCar() {
         addCarRequest.setManufacturer(manufacturer)
         addCarRequest.setModel(model)
         addCarRequest.setReleaseyear(parseInt(releaseYear))
-        addCarRequest.setPriceincents(parseFloat(price) * 100)
+        addCarRequest.setPriceincents(toCents(parseFloat(price)))
         addCarRequest.setFuelconsumption(parseFloat(fuelConsumption))
-        addCarRequest.setMaintenancecostincents(parseFloat(maintenanceCost) * 100)
+        addCarRequest.setMaintenancecostincents(toCents(parseFloat(maintenanceCost)))
         addCarRequest.setVersion(version)
         searchCarClient.addCar(addCarRequest, (error, responseMessage) => {
             if(!error) {

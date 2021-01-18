@@ -1,19 +1,49 @@
-import {AnnualCostsRequest} from "../proto/searchCar_pb";
+import {AnnualCostsRequest, CarAnnualCosts} from "../proto/searchCar_pb";
 import useSearchCarClient from "../hooks/useSearchCarClient";
+
+import "../components/FormListLayout.scss"
+import FormInputField from "../components/FormInputField";
+import {useState} from "react";
+import CarList from "../components/car/CarList";
+import {notEmpty} from "../utils/ArrayUtils";
+import {toCents} from "../utils/NumberUtils";
+import {useAlert} from "../providers/AlertProvider";
 
 export default function AnnualCosts() {
 
+    const {showAlert} = useAlert()
+
     const searchCarClient = useSearchCarClient()
+    const [fuelPrice, setFuelPrice] = useState('0')
+    const [travelDistancePerMonth, setTravelDistancePerMonth] = useState('0')
+    const [cars, setCars] = useState<CarAnnualCosts[]>()
 
     async function getAnnualCostsList() {
         const annualCostRequest = new AnnualCostsRequest()
-        annualCostRequest.setFuelpriceincents(150)
-        annualCostRequest.setTraveldistancepermonth(1000)
+        annualCostRequest.setFuelpriceincents(toCents(parseFloat(fuelPrice)))
+        annualCostRequest.setTraveldistancepermonth(toCents(parseFloat(travelDistancePerMonth)))
 
         await searchCarClient.rankCarsOnAnnualCosts(annualCostRequest, (error, responseMessage) => {
-            responseMessage?.getCarsList().map((carData) => console.log('Cost for car per year', carData.getCar()?.getManufacturer(), carData.getCar()?.getModel(), carData.getAnnualcosts()))
+            if(error) {
+                showAlert({title: 'Error', message: `Failed to retrieve cars ${error.message}`, type: 'ERROR'})
+            } else {
+                setCars(responseMessage?.getCarsList())
+            }
         })
     }
 
-    return (<div><h1>Annual costs</h1></div>)
+    return (<div>
+        <h1>Annual costs</h1>
+        <div className="form-list-container">
+            <form className="form-list-form" onSubmit={async (event) => {await getAnnualCostsList(); event.preventDefault()}}>
+                <FormInputField label="Fuel price per litre" value={fuelPrice} onChange={setFuelPrice}/>
+                <FormInputField label="Travel distance per month" value={travelDistancePerMonth} onChange={setTravelDistancePerMonth}/>
+
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div className="form-list-list">
+            {cars && <CarList cars={cars.map((car) => car.getCar()).filter(notEmpty)}/>}
+        </div>
+    </div>)
 }
