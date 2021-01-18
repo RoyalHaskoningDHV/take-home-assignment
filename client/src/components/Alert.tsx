@@ -19,7 +19,7 @@ export default function Alert({type, title, message, buttons}: AlertProps) {
             <h3>{title}</h3>
             <p>{message}</p>
             <div className="alert-buttonlist">
-                <button className="button-outline" onClick={dismissAlert}>Close</button>
+                <button onClick={dismissAlert}>Close</button>
                 {buttons?.map((button) => <button onClick={button.onClick}>{button.label}</button>)}
             </div>
         </div>
