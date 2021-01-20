@@ -139,6 +139,31 @@ The server currently retrieves all cars from the Mongo database when providing t
 
 In a real production situation, we may want to move the annual cost calculation to a (suitable) database query, offloading the calculations and sorting so that the webserver isn't hogging too much resources.
 
+For mongo, this would probably use aggregation The calculation would look something like this:
+```
+{
+    newField:
+    {$add:
+            [
+                {
+                    $add:
+                        [
+                            {
+                                $divide:
+                                    [
+                                        {$multiply: [INSERT_MONTHLY_DISTANCE, 12]},
+                                        "$fuelConsumption"
+                                    ]
+                            },
+                            "$maintenanceCostInCents"
+                        ]
+                },
+                {$multiply: ["$priceInCents", INSERT_DEPRECIATION_PERCENTAGE]}
+            ]
+    }
+}
+```
+
 This probably requires a good evaluation on what database engine is best for this use case.
 
 ## Running the application
