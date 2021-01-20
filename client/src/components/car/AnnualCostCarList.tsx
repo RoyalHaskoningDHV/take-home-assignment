@@ -10,7 +10,7 @@ type Props = {
 
 export default function AnnualCostCarList({cars, numberOfYears}: Props) {
 
-    function getCosts(car: CarAnnualCosts): number {
+    function getCosts(car: CarAnnualCosts, numberOfYears: number): number {
         return (car.getAnnualcosts() * numberOfYears) / 100
     }
 
@@ -21,7 +21,8 @@ export default function AnnualCostCarList({cars, numberOfYears}: Props) {
             return (
                 // TODO: Key should be some unique id per car
                 <CarListItem key={Math.random()} car={car}>
-                    <p>Annual costs: &euro; {getCosts(carWithCosts)}</p>
+                    <p>Annual costs: &euro; {getCosts(carWithCosts, 1)}</p>
+                    <p>Costs of {numberOfYears} years: &euro; {getCosts(carWithCosts, numberOfYears)}</p>
                 </CarListItem>
             )
         }
