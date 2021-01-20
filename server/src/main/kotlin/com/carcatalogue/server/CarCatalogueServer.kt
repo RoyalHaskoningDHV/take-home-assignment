@@ -12,7 +12,7 @@ import org.apache.logging.log4j.kotlin.Logging
 import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollection
 
-const val CAR_REPO_URL = "mongodb+srv://admin:admin@cluster0.qxqrv.mongodb.net/carrepo?retryWrites=true&w=majority";
+const val CAR_REPO_URL = "mongodb+srv://admin:admin@carrepository.qxqrv.mongodb.net/carrepo?retryWrites=false&w=majority";
 const val CAR_REPO_DB_NAME = "carrepo"
 const val CAR_COLLECTION_NAME = "cars"
 
