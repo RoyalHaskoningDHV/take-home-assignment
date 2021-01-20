@@ -101,25 +101,68 @@ Based on these stories, please do as follows:
 
 * Can you describe 1 thing that can go wrong with your code once in production?
 
+## Architecture
+
+### Server
+The server consists of just a single service, because it's features are closely related and are not complex.
+
+Data is stored in a cloud hosted MongoDB cluster and retrieved using the `CarRepo` repository class. This repository (with its interface) adds a separation of concern so that replacing the database engine to something else, or adding a memory-cache doesn't affect the entire code base.
+
+The stored data uses it's own model, to keep the logic loosely coupled with the proto definition.
+
+In this case I've added a separate package `recommendations` that contains the logic to calculate the annual cost price per car. This makes sure the logic is contained, reusable and testable.
+
+### Client
+The client is a simple React based web-application, set up using the `create-react-app` tool to ensure a consistent setup with potential other React web application projects.
+
+I've added `react-router-dom` to enable navigation between screens and used `grpc-web` to enable communication with the gRPC server.
+
+The `components` folder consists of a collection of re-usable components that may or may not have their own logic. These components are the building blocks of the app.
+
+The `services` folder contains the abstraction layer between the app and the gRPC server, and adds the wiring to enable proper `await` promises for the app.
+
+### Envoy
+The Envoy proxy is needed to make a web-application work with gRPC on localhost (or for older browsers), because the web-client connects using HTTP/1, while the Kotlin server only accepts HTTP/2.
+
+## Dividing work between 3 developers
+The division of work depends on the state of the project, when starting a new project (like in this assignment), it may be good to dedicate setup work like front-end components (the scss part) to one individual, while others set up the React app, gRPC protos and the server.
+
+When initial setup and global front-end components are done, it might be a good idea to work on one story with the three developers at the same time. 
+In that way, all developers are aware of the quirks and requirements of the stories and are able to apply fixes or expansions when needed in the future.
+
+I would imagine that when starting a story, one developer sets up the protos and stubs (on the server), so implementation of the actual logic and front-end can be divided.
+
+This way of working will require setting up main story branches where small pull requests can be rapidly reviewed and merged to. Once the main story is implemented, that story branch can be merged into a master branch.
+
+## Potential problems in production
+The server currently retrieves all cars from the Mongo database when providing the list of annual costs. 
+
+In a real production situation, we may want to move the annual cost calculation to a (suitable) database query, offloading the calculations and sorting so that the webserver isn't hogging too much resources.
+
+This probably requires a good evaluation on what database engine is best for this use case.
 
 ## Running the application
 The application consists of three parts: The server (Kotlin), the client (React) and the Envoy proxy (to make grpc work in the browser).
 
 To start it all up, do the following:
 
-### Server (Run locally)
- - Run `./gradlew CarCatalogueServer`
+### Server
 
-### Server (compile jar and run stand-along)
- - Run `./gradlew installDist` to compile the code
- - Run `./server/build/install/server/bin/car-catalogue-server` to start the server
+#### Run locally
+- Run `./gradlew CarCatalogueServer`
+
+#### Server (compile jar and run stand-along)
+- Run `./gradlew installDist` to compile the code
+- Run `./server/build/install/server/bin/car-catalogue-server` to start the server
 
 ### Envoy
 You need to have Docker installed for this
- - Run `docker-compose build` to create the docker container
- - Run `docker-compose up` to start the docker container
+- Run `docker-compose build` to create the docker container
+- Run `docker-compose up` to start the docker container
 
 ### Client
 Execute these commands in the client folder
- - Run `npm install` to install dependencies
- - Run `npm start` to start the react web application
+- Run `brew install protobuf` to install protobuf for compiling proto files for web
+- Run `npm install` to install dependencies
+- Run `npm run generate-proto` to generate the gRPC JavaScript/TypeScript files
+- Run `npm start` to start the react web application
