@@ -135,6 +135,8 @@ I would imagine that when starting a story, one developer sets up the protos and
 This way of working will require setting up main story branches where small pull requests can be rapidly reviewed and merged to. Once the main story is implemented, that story branch can be merged into a master branch.
 
 ## Potential problems in production
+
+### Data retrieval
 The server currently retrieves all cars from the Mongo database when providing the list of annual costs. 
 
 In a real production situation, we may want to move the annual cost calculation to a (suitable) database query, offloading the calculations and sorting so that the webserver isn't hogging too much resources.
@@ -165,6 +167,9 @@ For mongo, this would probably use aggregation The calculation would look someth
 ```
 
 This probably requires a good evaluation on what database engine is best for this use case.
+
+### Assumption on calculation
+For the calculation of annual costs, i've done an assumption on car depreciation costs, in a real-world example, this would need clear specifications on what this means for the annual costs.
 
 ## Running the application
 The application consists of three parts: The server (Kotlin), the client (React) and the Envoy proxy (to make grpc work in the browser).
