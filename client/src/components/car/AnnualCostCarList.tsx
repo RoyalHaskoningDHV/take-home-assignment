@@ -19,7 +19,8 @@ export default function AnnualCostCarList({cars, numberOfYears}: Props) {
         const car = carWithCosts.getCar()
         if(car) {
             return (
-                <CarListItem car={car}>
+                // TODO: Key should be some unique id per car
+                <CarListItem key={Math.random()} car={car}>
                     <p>Annual costs: &euro; {getCosts(carWithCosts)}</p>
                 </CarListItem>
             )
