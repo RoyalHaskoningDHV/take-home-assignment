@@ -8,7 +8,7 @@ object Cars {
         version = "180",
         releaseYear = 2008,
         priceInCents = 3500000,
-        fuelConsumption = 10.0,
+        fuelConsumption = 19.0,
         maintenanceCostInCents = 30000
     )
     val opelAstra = CarData(model = "Astra",

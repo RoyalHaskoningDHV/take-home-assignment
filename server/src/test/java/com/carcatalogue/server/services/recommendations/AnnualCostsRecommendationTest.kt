@@ -7,29 +7,29 @@ import org.junit.jupiter.api.Test
 class AnnualCostsRecommendationTest {
     @Test
     fun testRecommendationCalculation() {
-        Assertions.assertEquals(150000, AnnualCostsRecommendation()
+        Assertions.assertEquals(268158, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.mercedesB, 100, 1000))
-        Assertions.assertEquals(31200, AnnualCostsRecommendation()
+        Assertions.assertEquals(205632, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.mercedesB, 100, 10))
 
-        Assertions.assertEquals(129552, AnnualCostsRecommendation()
+        Assertions.assertEquals(229552, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.opelAstra, 100, 1000))
-        Assertions.assertEquals(40896, AnnualCostsRecommendation()
+        Assertions.assertEquals(140896, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.opelAstra, 100, 10))
 
-        Assertions.assertEquals(127922, AnnualCostsRecommendation()
+        Assertions.assertEquals(242922, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.peugeot308, 100, 1000))
-        Assertions.assertEquals(50779, AnnualCostsRecommendation()
+        Assertions.assertEquals(165779, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.peugeot308, 100, 10))
     }
 
     @Test
     fun testRecommendationCalculationWithEdgeCaseInput() {
-        Assertions.assertEquals(50000, AnnualCostsRecommendation()
+        Assertions.assertEquals(165000, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.peugeot308, 0, 0))
-        Assertions.assertEquals(30000, AnnualCostsRecommendation()
+        Assertions.assertEquals(205000, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.mercedesB, 0, 0))
-        Assertions.assertEquals(40000, AnnualCostsRecommendation()
+        Assertions.assertEquals(140000, AnnualCostsRecommendation()
             .getAnnualCostsInCents(Cars.opelAstra, 0, 0))
     }
 
@@ -37,24 +37,24 @@ class AnnualCostsRecommendationTest {
     fun testRecommendationSorting() {
         val sort1 = AnnualCostsRecommendation()
             .sortByAnnualCosts(listOf(Cars.mercedesB, Cars.peugeot308, Cars.opelAstra), 100, 1000)
-        Assertions.assertEquals(Cars.peugeot308, sort1[0].car)
-        Assertions.assertEquals(Cars.opelAstra, sort1[1].car)
+        Assertions.assertEquals(Cars.opelAstra, sort1[0].car)
+        Assertions.assertEquals(Cars.peugeot308, sort1[1].car)
         Assertions.assertEquals(Cars.mercedesB, sort1[2].car)
 
         val sort2 = AnnualCostsRecommendation()
-            .sortByAnnualCosts(listOf(Cars.mercedesB, Cars.peugeot308, Cars.opelAstra), 100, 10)
+            .sortByAnnualCosts(listOf(Cars.mercedesB, Cars.peugeot308, Cars.opelAstra), 230, 15000)
         Assertions.assertEquals(Cars.mercedesB, sort2[0].car)
-        Assertions.assertEquals(Cars.opelAstra, sort2[1].car)
-        Assertions.assertEquals(Cars.peugeot308, sort2[2].car)
+        Assertions.assertEquals(Cars.peugeot308, sort2[1].car)
+        Assertions.assertEquals(Cars.opelAstra, sort2[2].car)
     }
 
     @Test
     fun testRecommendationSortingWithEdgeCaseInput() {
         val sort1 = AnnualCostsRecommendation()
             .sortByAnnualCosts(listOf(Cars.mercedesB, Cars.peugeot308, Cars.opelAstra), 0, 0)
-        Assertions.assertEquals(Cars.mercedesB, sort1[0].car)
-        Assertions.assertEquals(Cars.opelAstra, sort1[1].car)
-        Assertions.assertEquals(Cars.peugeot308, sort1[2].car)
+        Assertions.assertEquals(Cars.opelAstra, sort1[0].car)
+        Assertions.assertEquals(Cars.peugeot308, sort1[1].car)
+        Assertions.assertEquals(Cars.mercedesB, sort1[2].car)
     }
 
     @Test

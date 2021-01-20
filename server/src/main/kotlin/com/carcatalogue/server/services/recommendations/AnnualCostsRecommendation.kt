@@ -3,6 +3,7 @@ package com.carcatalogue.server.services.recommendations
 import com.carcatalogue.server.repository.model.CarData
 
 private const val MONTHS_PER_YEAR = 12
+private const val DEPRECIATION_PERCENTAGE_PER_YEAR = 5
 
 class AnnualCostsRecommendation {
     /**
@@ -25,7 +26,9 @@ class AnnualCostsRecommendation {
      */
     fun getAnnualCostsInCents(car: CarData, fuelPriceInCents: Int, travelDistancePerMonth: Int): Long {
         val fuelLitres = (travelDistancePerMonth * MONTHS_PER_YEAR) / car.fuelConsumption
-        return Math.round(fuelLitres * fuelPriceInCents + car.maintenanceCostInCents)
+        // TODO: Check with the product owner on how to calculate depreciation
+        val depreciationPerYear = car.priceInCents * (DEPRECIATION_PERCENTAGE_PER_YEAR / 100f)
+        return Math.round(fuelLitres * fuelPriceInCents + car.maintenanceCostInCents + depreciationPerYear)
     }
 }
 
