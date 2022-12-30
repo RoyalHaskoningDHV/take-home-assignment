@@ -1,5 +1,7 @@
 package com.rhdhv.infra.adapters.elasticsearch.document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rhdhv.domain.model.Car;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -17,6 +19,8 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Builder
 @Data
@@ -27,28 +31,41 @@ public class CarDocument implements Persistable<String> {
 
   @Id
   private String id;
+
   @Field(type = FieldType.Keyword)
   private String brand;
+
   @Field(type = FieldType.Keyword)
   private String model;
+
   @Field(type = FieldType.Keyword)
   private String version;
+
   @Field(type = FieldType.Integer)
   private Integer releaseYear;
+
   @Field(type = FieldType.Double)
   private BigDecimal price;
+
   @Field(type = FieldType.Double)
   private BigDecimal fuelConsumption;
+
   @Field(type = FieldType.Double)
   private BigDecimal annualMaintenanceCost;
+
   @CreatedDate
+  @DateTimeFormat(iso = ISO.DATE_TIME)
+  @JsonFormat(pattern = "uuuuMMdd'T'HHmmss.SSSXXX")
   @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
   private Instant createdAt;
 
   @LastModifiedDate
+  @DateTimeFormat(iso = ISO.DATE_TIME)
+  @JsonFormat(pattern = "uuuuMMdd'T'HHmmss.SSSXXX")
   @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
   private Instant updatedAt;
 
+  @JsonIgnore
   public Car toModel() {
     return Car.builder()
         .id(this.id)
@@ -65,6 +82,7 @@ public class CarDocument implements Persistable<String> {
   }
 
   @Override
+  @JsonIgnore
   public boolean isNew() {
     return this.id == null;
   }

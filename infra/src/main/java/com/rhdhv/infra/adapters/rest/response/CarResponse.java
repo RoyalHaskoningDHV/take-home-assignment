@@ -1,4 +1,4 @@
-package com.rhdhv.infra.adapters.web.response;
+package com.rhdhv.infra.adapters.rest.response;
 
 import com.rhdhv.domain.model.Car;
 import java.math.BigDecimal;

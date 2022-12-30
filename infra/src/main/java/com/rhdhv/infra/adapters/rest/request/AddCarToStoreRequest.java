@@ -1,4 +1,4 @@
-package com.rhdhv.infra.adapters.web.request;
+package com.rhdhv.infra.adapters.rest.request;
 
 import com.rhdhv.domain.usecase.AddCarToStore;
 import jakarta.validation.constraints.NotEmpty;
