@@ -3,12 +3,15 @@ package com.rhdhv.domain.service;
 import com.rhdhv.domain.AddCarToStoreUseCaseHandler;
 import com.rhdhv.domain.DeleteAllCarUseCaseHandler;
 import com.rhdhv.domain.FullTextSearchCarUseCaseHandler;
+import com.rhdhv.domain.RecommendCarUseCaseHandler;
 import com.rhdhv.domain.RetrieveCarsByFilterUseCaseHandler;
 import com.rhdhv.domain.common.DomainService;
 import com.rhdhv.domain.model.Car;
+import com.rhdhv.domain.model.TotalAnnualCostOfCar;
 import com.rhdhv.domain.usecase.AddCarToStore;
 import com.rhdhv.domain.usecase.DeleteAllCar;
 import com.rhdhv.domain.usecase.FullTextSearchCar;
+import com.rhdhv.domain.usecase.RecommendCarsByLowestTotalAnnualCosts;
 import com.rhdhv.domain.usecase.RetrieveCarsByFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ public class CarStoreFacade {
   private final FullTextSearchCarUseCaseHandler fullTextSearchCarUseCaseHandler;
   private final RetrieveCarsByFilterUseCaseHandler retrieveCarsByFilterUseCaseHandler;
   private final DeleteAllCarUseCaseHandler deleteAllCarUseCaseHandler;
+  private final RecommendCarUseCaseHandler recommendCarUseCaseHandler;
 
   public Car addCar(final AddCarToStore addCarToStore) {
     return this.addCarToStoreUseCaseHandler.handle(addCarToStore);
@@ -38,4 +42,9 @@ public class CarStoreFacade {
     final DeleteAllCar deleteAllCar = new DeleteAllCar();
     this.deleteAllCarUseCaseHandler.handle(deleteAllCar);
   }
+
+  public Page<TotalAnnualCostOfCar> recommend(final RecommendCarsByLowestTotalAnnualCosts useCase) {
+    return this.recommendCarUseCaseHandler.handle(useCase);
+  }
+
 }

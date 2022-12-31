@@ -1,5 +1,7 @@
 package com.rhdhv.infra.common;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -25,6 +28,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
   }
 
+  @ExceptionHandler(ConstraintViolationException.class)
+  public static ProblemDetail handle(final ConstraintViolationException exception) {
+    final String errorMessage = exception.getConstraintViolations()
+        .stream()
+        .map(GlobalExceptionHandler::violationMessage)
+        .collect(Collectors.joining(" && "));
+
+    return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errorMessage);
+  }
+
+
+  private static String violationMessage(final ConstraintViolation<?> violation) {
+    return violation.getRootBeanClass().getName() + " " + violation.getPropertyPath() + ": " + violation.getMessage();
+  }
+
+  @ExceptionHandler(WebExchangeBindException.class)
+  public ProblemDetail handleRequestPropertyBindingError(final WebExchangeBindException webExchangeBindException) {
+    log.debug("Bad request!", webExchangeBindException);
+
+    return createFieldErrorResponse(webExchangeBindException.getBindingResult());
+  }
 
   @Override
   public ResponseEntity<Object> handleMethodArgumentNotValid(

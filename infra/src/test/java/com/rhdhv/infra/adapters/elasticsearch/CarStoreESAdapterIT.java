@@ -5,29 +5,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.rhdhv.domain.model.Car;
 import com.rhdhv.domain.usecase.AddCarToStore;
-import com.rhdhv.infra.AbstractIT;
+import com.rhdhv.infra.ElasticsearchContainerInitializer;
 import java.math.BigDecimal;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
-class CarStoreESAdapterIT extends AbstractIT {
+@ContextConfiguration(initializers = ElasticsearchContainerInitializer.class)
+class CarStoreESAdapterIT {
 
   @Autowired
   private CarStoreESAdapter carStoreESAdapter;
-
-  @BeforeEach
-  void setUp() {
-    ELASTICSEARCH_CONTAINER.start();
-  }
-
-  @AfterEach
-  void tearDown() {
-    ELASTICSEARCH_CONTAINER.stop();
-  }
 
   @Test
   void save() {
