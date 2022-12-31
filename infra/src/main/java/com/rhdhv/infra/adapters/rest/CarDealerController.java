@@ -12,6 +12,7 @@ import com.rhdhv.infra.adapters.rest.request.AddCarToStoreRequest;
 import com.rhdhv.infra.adapters.rest.response.CarResponse;
 import com.rhdhv.infra.adapters.rest.response.CarsResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/car-dealer")
@@ -36,7 +39,6 @@ public class CarDealerController {
 
   @PostMapping
   public ResponseEntity<CarResponse> addCarToStore(@RequestBody @Valid final AddCarToStoreRequest request) {
-
     final Car car = this.carStoreFacade.addCar(request.toModel());
 
     return ResponseEntity.status(HttpStatus.CREATED).body(CarResponse.from(car));
@@ -47,7 +49,7 @@ public class CarDealerController {
       @RequestParam(value = "year", required = false) final Integer year,
       @RequestParam(value = "brand", required = false) final String brand,
       @RequestParam(value = "page", required = false) final Integer page,
-      @RequestParam(value = "size", required = false) final Integer size,
+      @RequestParam(value = "size", required = false) @Max(DEFAULT_PAGE_SIZE) final Integer size,
       @RequestParam(value = "sort", required = false) final Sort.Direction direction,
       @RequestParam(value = "props", required = false) final String properties) {
 

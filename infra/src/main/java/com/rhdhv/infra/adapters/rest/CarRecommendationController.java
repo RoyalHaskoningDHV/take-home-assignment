@@ -7,6 +7,7 @@ import com.rhdhv.domain.model.TotalAnnualCostOfCar;
 import com.rhdhv.domain.service.CarStoreFacade;
 import com.rhdhv.domain.usecase.RecommendCarsByLowestTotalAnnualCosts;
 import com.rhdhv.infra.adapters.rest.response.RecommendationResponse;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -34,7 +35,7 @@ public class CarRecommendationController {
       @RequestParam("dist_month") @Positive final int travelDistancePerMonth,
       @RequestParam("fuel_cons") @Positive final BigDecimal fuelConsumption,
       @RequestParam(value = "page", required = false) final Integer page,
-      @RequestParam(value = "size", required = false) final Integer size) {
+      @RequestParam(value = "size", required = false) @Max(DEFAULT_PAGE_SIZE) final Integer size) {
 
     final PageRequest pageRequest = PageRequest.of(
         Objects.requireNonNullElse(page, FIRST_PAGE),

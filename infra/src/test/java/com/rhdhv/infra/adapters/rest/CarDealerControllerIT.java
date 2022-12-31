@@ -218,6 +218,24 @@ class CarDealerControllerIT extends AbstractIT {
     verifyResponse(carsResponse, this.honda);
   }
 
+  @Test
+  void retrieveByInvalidQueryParamsThenReturn400() {
+    //when
+    final ResponseEntity<ProblemDetail> response = this.testRestTemplate.getForEntity(
+        URI.create("/api/v1/car-dealer?brand=Honda&year=2018&page=0&size=20000"),
+        ProblemDetail.class);
+
+    //then status
+    assertThat(response).isNotNull().returns(HttpStatus.BAD_REQUEST, ResponseEntity::getStatusCode);
+
+    // then body
+    final var problemDetail = response.getBody();
+
+    assertThat(problemDetail).returns(400, ProblemDetail::getStatus)
+        .returns("com.rhdhv.infra.adapters.rest.CarDealerController retrieve.size: must be less than or equal to 2000",
+            ProblemDetail::getDetail);
+  }
+
 
   @Test
   void fullTextSearchByYearThenReturnAllWith200() {
