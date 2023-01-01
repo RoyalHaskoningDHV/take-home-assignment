@@ -112,7 +112,7 @@ public class CarRecommendationESAdapter implements CarRecommendationPort {
     final CarDocument carDocument = carDocumentHit.source();
 
     if (Objects.nonNull(carDocument)) {
-      carDocument.setModel(carDocumentHit.id());
+      carDocument.setId(carDocumentHit.id());
 
       final Car car = carDocument.toModel();
 
