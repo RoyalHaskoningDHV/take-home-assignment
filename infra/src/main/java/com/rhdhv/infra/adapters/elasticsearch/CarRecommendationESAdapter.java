@@ -43,7 +43,7 @@ import org.springframework.stereotype.Service;
 public class CarRecommendationESAdapter implements CarRecommendationPort {
 
   private static final String TOTAL_ANNUAL_COST_FORMULA_SCRIPT = """
-       double totalAnnualCost = doc['fuelConsumption'].value * %s + doc['annualMaintenanceCost'].value ;
+       double totalAnnualCost = doc['fuelConsumption'].value * %s + doc['annualMaintenanceCost'].value * %s ;
        emit(totalAnnualCost);
       """;
 
@@ -54,7 +54,7 @@ public class CarRecommendationESAdapter implements CarRecommendationPort {
   public Page<TotalAnnualCostOfCar> findCarsByLowestTotalAnnualCost(final RecommendCarsByLowestTotalAnnualCosts useCase) {
 
     final RuntimeField totalAnnualCostCalculation = this.createRuntimeFieldForTotalAnnualCostCalculation(
-        useCase.totalTravelDistance());
+        useCase.totalTravelDistance(), useCase.period());
 
     final SearchRequest searchRequest = new Builder()
         .index(CARS_INDEX)
@@ -78,9 +78,9 @@ public class CarRecommendationESAdapter implements CarRecommendationPort {
   }
 
 
-  private RuntimeField createRuntimeFieldForTotalAnnualCostCalculation(final int totalTravelDistance) {
+  private RuntimeField createRuntimeFieldForTotalAnnualCostCalculation(final int totalTravelDistance, final int period) {
     final InlineScript totalAnnualCostFormula = new InlineScript.Builder()
-        .source(TOTAL_ANNUAL_COST_FORMULA_SCRIPT.formatted(totalTravelDistance))
+        .source(TOTAL_ANNUAL_COST_FORMULA_SCRIPT.formatted(totalTravelDistance, period))
         .build();
 
     final Script totalAnnualCostFormulaScript = new Script.Builder()

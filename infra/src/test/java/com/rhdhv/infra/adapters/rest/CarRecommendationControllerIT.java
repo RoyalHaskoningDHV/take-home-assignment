@@ -89,7 +89,7 @@ class CarRecommendationControllerIT extends AbstractIT {
 
     final TotalAnnualCostOfCar firstRecommendation = carsResponse.carsWithTotalAnnualCosts().get(0);
     assertThat(firstRecommendation)
-        .returns(new BigDecimal("3790.0"), TotalAnnualCostOfCar::totalAnnualCost);
+        .returns(new BigDecimal("4360.0"), TotalAnnualCostOfCar::totalAnnualCost);
 
     final Car mercedes = this.cars.get(2);
     final Car firstCar = firstRecommendation.car();
@@ -102,7 +102,7 @@ class CarRecommendationControllerIT extends AbstractIT {
 
     final TotalAnnualCostOfCar secondRecommendation = carsResponse.carsWithTotalAnnualCosts().get(1);
     assertThat(secondRecommendation)
-        .returns(new BigDecimal("8320.0"), TotalAnnualCostOfCar::totalAnnualCost);
+        .returns(new BigDecimal("9520.0"), TotalAnnualCostOfCar::totalAnnualCost);
 
     final Car honda = this.cars.get(1);
     final Car secondCar = secondRecommendation.car();
@@ -115,7 +115,7 @@ class CarRecommendationControllerIT extends AbstractIT {
 
     final TotalAnnualCostOfCar thirdRecommendation = carsResponse.carsWithTotalAnnualCosts().get(2);
     assertThat(thirdRecommendation)
-        .returns(new BigDecimal("14504.0"), TotalAnnualCostOfCar::totalAnnualCost);
+        .returns(new BigDecimal("29504.0"), TotalAnnualCostOfCar::totalAnnualCost);
 
     final Car citroen = this.cars.get(0);
 
