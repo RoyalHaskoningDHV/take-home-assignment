@@ -108,9 +108,13 @@ public class CarRecommendationESAdapter implements CarRecommendationPort {
     );
   }
 
-  private void toModel(final Hit<CarDocument> carDocumentHit, final Consumer<? super TotalAnnualCostOfCar> consumer) {
-    if (Objects.nonNull(carDocumentHit.source())) {
-      final Car car = carDocumentHit.source().toModel();
+  private void toModel(final Hit<? extends CarDocument> carDocumentHit, final Consumer<? super TotalAnnualCostOfCar> consumer) {
+    final CarDocument carDocument = carDocumentHit.source();
+
+    if (Objects.nonNull(carDocument)) {
+      carDocument.setModel(carDocumentHit.id());
+
+      final Car car = carDocument.toModel();
 
       final JsonData jsonData = carDocumentHit.fields().get(TOTAL_ANNUAL_COST);
 

@@ -65,7 +65,6 @@ public class CarDocument implements Persistable<String> {
   @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
   private Instant updatedAt;
 
-  @JsonIgnore
   public Car toModel() {
     return Car.builder()
         .id(this.id)

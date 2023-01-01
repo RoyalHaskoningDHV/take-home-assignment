@@ -1,5 +1,30 @@
-version: "2.2"
+version: "3"
+
 services:
+  car-dealer-app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: production
+    labels:
+      container-name: car-dealer-app
+    ports:
+      - "8080:8080"
+    environment:
+      ELASTIC_USERNAME: "elastic"
+      ELASTIC_PASSWORD: "root123"
+      ELASTIC_URIS: "es01:9200"
+      ELASTIC_SOCKET_KEEP_ALIVE: true
+    volumes:
+      - ../:/production
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_healthy
+      es03:
+        condition: service_healthy
+
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
