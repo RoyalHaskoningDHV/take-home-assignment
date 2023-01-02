@@ -36,7 +36,7 @@ technology-independent code.
 
 #### What is the Hexagonal Architecture
 
-![App Screenshot](Hexagonal Architecture.jpeg)
+![Hexagonal Architecture](https://user-images.githubusercontent.com/17534654/210247951-dae73b29-7b86-47a6-8175-c6c2de6381c2.jpeg)
 
 The hexagonal architecture was invented by Alistair Cockburn in an attempt to avoid known structural pitfalls in object-oriented
 software design, such as undesired dependencies between layers and contamination of user interface code with business logic, and
