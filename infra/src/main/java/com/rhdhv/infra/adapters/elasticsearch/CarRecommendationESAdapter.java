@@ -42,8 +42,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CarRecommendationESAdapter implements CarRecommendationPort {
 
+  // "%s" is totalTravelDistancePerYear
   private static final String TOTAL_ANNUAL_COST_FORMULA_SCRIPT = """
-       double totalAnnualCost = doc['fuelConsumption'].value * %s + doc['annualMaintenanceCost'].value * %s ;
+       double totalAnnualCost = doc['fuelConsumption'].value * %s + doc['annualMaintenanceCost'].value ;
        emit(totalAnnualCost);
       """;
 
@@ -54,7 +55,7 @@ public class CarRecommendationESAdapter implements CarRecommendationPort {
   public Page<TotalAnnualCostOfCar> findCarsByLowestTotalAnnualCost(final RecommendCarsByLowestTotalAnnualCosts useCase) {
 
     final RuntimeField totalAnnualCostCalculation = this.createRuntimeFieldForTotalAnnualCostCalculation(
-        useCase.totalTravelDistance(), useCase.period());
+        useCase.totalTravelDistancePerYear());
 
     final SearchRequest searchRequest = new Builder()
         .index(CARS_INDEX)
@@ -78,9 +79,9 @@ public class CarRecommendationESAdapter implements CarRecommendationPort {
   }
 
 
-  private RuntimeField createRuntimeFieldForTotalAnnualCostCalculation(final int totalTravelDistance, final int period) {
+  private RuntimeField createRuntimeFieldForTotalAnnualCostCalculation(final int totalTravelDistancePerYear) {
     final InlineScript totalAnnualCostFormula = new InlineScript.Builder()
-        .source(TOTAL_ANNUAL_COST_FORMULA_SCRIPT.formatted(totalTravelDistance, period))
+        .source(TOTAL_ANNUAL_COST_FORMULA_SCRIPT.formatted(totalTravelDistancePerYear))
         .build();
 
     final Script totalAnnualCostFormulaScript = new Script.Builder()

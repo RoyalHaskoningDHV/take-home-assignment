@@ -1,5 +1,7 @@
 package com.rhdhv.infra.adapters.elasticsearch;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.rhdhv.domain.model.TotalAnnualCostOfCar;
 import com.rhdhv.domain.usecase.RecommendCarsByLowestTotalAnnualCosts;
 import com.rhdhv.infra.ElasticsearchContainerInitializer;
@@ -8,7 +10,6 @@ import com.rhdhv.infra.adapters.elasticsearch.repository.CarESRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Stream;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,17 +78,22 @@ class CarRecommendationESAdapterIT {
         .fuelConsumption(BigDecimal.valueOf(0.55))
         .pageRequest(PageRequest.of(0, 100))
         .build();
+
+    assertThat(useCase.totalTravelDistancePerYear()).isEqualTo(3000);
+    assertThat(useCase.totalTravelDistance()).isEqualTo(12000);
+    assertThat(useCase.totalFuelCost()).isEqualTo(new BigDecimal("6600.00"));
+    assertThat(useCase.totalFuelCostPerYear()).isEqualTo(new BigDecimal("1650.00"));
     //when
     final Page<TotalAnnualCostOfCar> carsByLowestTotalAnnualCost = this.carRecommendationESAdapter.findCarsByLowestTotalAnnualCost(
         useCase);
 
     //then
     final List<TotalAnnualCostOfCar> content = carsByLowestTotalAnnualCost.getContent();
+    assertThat(content).hasSize(3);
 
-    Assertions.assertThat(content).hasSize(3);
+    assertThat(content.get(0).totalAnnualCost()).isEqualTo(new BigDecimal("940.0"));
+    assertThat(content.get(1).totalAnnualCost()).isEqualTo(new BigDecimal("2050.0"));
+    assertThat(content.get(2).totalAnnualCost()).isEqualTo(new BigDecimal("6980.0"));
 
-    Assertions.assertThat(content.get(0).totalAnnualCost()).isEqualTo(new BigDecimal("3760.0"));
-    Assertions.assertThat(content.get(1).totalAnnualCost()).isEqualTo(new BigDecimal("8200.0"));
-    Assertions.assertThat(content.get(2).totalAnnualCost()).isEqualTo(new BigDecimal("27920.0"));
   }
 }

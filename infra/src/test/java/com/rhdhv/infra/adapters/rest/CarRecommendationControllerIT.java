@@ -85,11 +85,15 @@ class CarRecommendationControllerIT extends AbstractIT {
 
     // then body
     final RecommendationResponse carsResponse = response.getBody();
-    assertThat(carsResponse).returns(new BigDecimal("8640.00"), RecommendationResponse::givenAnnualCost);
+    assertThat(carsResponse)
+        .returns(new BigDecimal("8640.00"), RecommendationResponse::totalFuelCost)
+        .returns(new BigDecimal("2160.00"), RecommendationResponse::totalFuelCostPerYear)
+        .returns(14400, RecommendationResponse::totalTravelDistance)
+        .returns(3600, RecommendationResponse::totalTravelDistancePerYear);
 
     final TotalAnnualCostOfCar firstRecommendation = carsResponse.carsWithTotalAnnualCosts().get(0);
     assertThat(firstRecommendation)
-        .returns(new BigDecimal("4360.0"), TotalAnnualCostOfCar::totalAnnualCost);
+        .returns(new BigDecimal("1090.0"), TotalAnnualCostOfCar::totalAnnualCost);
 
     final Car mercedes = this.cars.get(2);
     final Car firstCar = firstRecommendation.car();
@@ -102,7 +106,7 @@ class CarRecommendationControllerIT extends AbstractIT {
 
     final TotalAnnualCostOfCar secondRecommendation = carsResponse.carsWithTotalAnnualCosts().get(1);
     assertThat(secondRecommendation)
-        .returns(new BigDecimal("9520.0"), TotalAnnualCostOfCar::totalAnnualCost);
+        .returns(new BigDecimal("2380.0"), TotalAnnualCostOfCar::totalAnnualCost);
 
     final Car honda = this.cars.get(1);
     final Car secondCar = secondRecommendation.car();
@@ -115,7 +119,7 @@ class CarRecommendationControllerIT extends AbstractIT {
 
     final TotalAnnualCostOfCar thirdRecommendation = carsResponse.carsWithTotalAnnualCosts().get(2);
     assertThat(thirdRecommendation)
-        .returns(new BigDecimal("29504.0"), TotalAnnualCostOfCar::totalAnnualCost);
+        .returns(new BigDecimal("7376.0"), TotalAnnualCostOfCar::totalAnnualCost);
 
     final Car citroen = this.cars.get(0);
 
